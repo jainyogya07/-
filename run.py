@@ -31,4 +31,8 @@ if str(BACKEND_DIR) not in current_pythonpath.split(os.pathsep):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    workers = int(os.environ.get("WORKERS", "1"))
+    reload = os.environ.get("RELOAD", "True").lower() in ("true", "1")
+    if workers > 1:
+        reload = False
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=reload, workers=workers)

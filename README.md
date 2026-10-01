@@ -50,7 +50,12 @@ pip install -r requirements.txt
 
 ### 2. Start the API Server
 ```bash
+# Standard Launch (with hot-reload):
 python run.py
+
+# High-Performance Multi-Worker Launch (e.g. 4 parallel workers):
+WORKERS=4 python run.py
+
 # Server will launch on http://0.0.0.0:8000
 # Interactive Swagger Documentation: http://127.0.0.1:8000/docs
 # Interactive Redoc: http://127.0.0.1:8000/redoc
@@ -59,7 +64,7 @@ python run.py
 ### 3. Run Automated Test Suite
 ```bash
 PYTHONPATH=backend pytest backend/tests -v
-# 39 tests covering data ingestion, preprocessing, EFI, spatial bboxes, GeoJSON, datasets, and APIs
+# 46 tests covering data ingestion, preprocessing, EFI, spatial bboxes, GeoJSON, datasets, parallel workers, pest risk (Mod 14), and market intelligence (Mod 15)
 ```
 
 ---

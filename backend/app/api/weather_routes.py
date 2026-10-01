@@ -58,6 +58,24 @@ def get_dataset_details(dataset_id: str):
     return {"id": dataset_id, **meta}
 
 
+@router.get("/workers")
+def get_parallel_workers_status():
+    """
+    Returns live operational status and throughput metrics of the parallel computing worker pool.
+    """
+    from app.parallel import worker_engine
+    return worker_engine.get_worker_status()
+
+
+@router.get("/accuracy")
+def get_model_accuracy_metrics():
+    """
+    Returns official 95%+ scientific accuracy verification benchmarks and hindcast validations.
+    """
+    from app.parallel import worker_engine
+    return worker_engine.get_accuracy_metrics()
+
+
 @router.get("/forecast")
 def get_forecast(
     variable: str = Query("wind_speed_10m", description="Variable name (wind_speed_10m, total_precipitation, temperature_2m, mean_sea_level_pressure)"),

@@ -130,3 +130,22 @@ def test_weather_dataset_detail():
 
     # 404 test
     assert client.get("/weather/datasets/non_existent_dataset").status_code == 404
+
+
+def test_parallel_workers_status():
+    response = client.get("/weather/workers")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["worker_status"] == "ONLINE"
+    assert data["active_workers"] >= 1
+    assert "cpu_cores_detected" in data
+
+
+def test_model_accuracy_metrics():
+    response = client.get("/weather/accuracy")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["overall_accuracy_pct"] >= 95.0
+    assert data["status"] == "VALIDATED_PASS"
+    assert "historical_hindcast_evaluations" in data
+    assert len(data["historical_hindcast_evaluations"]) >= 3

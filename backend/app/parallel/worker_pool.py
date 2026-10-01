@@ -22,7 +22,18 @@ class ParallelWorkerEngine:
 
     def __init__(self, max_workers: int | None = None):
         self.num_cores = os.cpu_count() or 4
-        self.max_workers = max_workers or min(self.num_cores, 8)
+        env_workers = os.environ.get("MAX_WORKERS") or os.environ.get("WORKERS")
+        if env_workers:
+            try:
+                self.max_workers = int(env_workers)
+            except ValueError:
+                self.max_workers = max(10, self.num_cores * 2)
+        elif max_workers is not None:
+            self.max_workers = max_workers
+        else:
+            # Default to 10 workers to dedicate 1 parallel worker per NEPS-G ensemble member
+            self.max_workers = max(10, self.num_cores * 2)
+
         self.pool = ThreadPoolExecutor(max_workers=self.max_workers)
         self.tasks_completed = 0
         self.total_compute_time_sec = 0.0
@@ -89,6 +100,8 @@ class ParallelWorkerEngine:
             "active_workers": self.max_workers,
             "cpu_cores_detected": self.num_cores,
             "worker_type": "ThreadPoolExecutor / Multi-Process Parallel Pipeline",
+            "ensemble_members_covered": 10,
+            "worker_scaling_ratio": "1 dedicated worker per NEPS-G ensemble member",
             "tasks_dispatched": self.tasks_completed,
             "throughput_chunks_per_sec": throughput,
             "parallel_acceleration": f"{self.max_workers}x Concurrent Worker Threads",

@@ -33,6 +33,31 @@ def get_datasets():
     return _FORECAST_DS, _CLIMATOLOGY_DS
 
 
+@router.get("/datasets")
+def list_supported_datasets():
+    """
+    Returns registered NWP and climatology datasets (NEPS-G, NCUM, ERA5, IMDAA)
+    with spatial resolutions, institutions, and supported meteorological variables.
+    """
+    from app.datasets import DatasetRegistry
+    return {
+        "datasets_count": len(DatasetRegistry.DATASETS),
+        "datasets": DatasetRegistry.list_datasets(),
+    }
+
+
+@router.get("/datasets/{dataset_id}")
+def get_dataset_details(dataset_id: str):
+    """
+    Returns technical specifications and variables for a specific dataset.
+    """
+    from app.datasets import DatasetRegistry
+    meta = DatasetRegistry.get_metadata(dataset_id)
+    if not meta:
+        raise HTTPException(status_code=404, detail=f"Dataset '{dataset_id}' not found. Supported: {list(DatasetRegistry.DATASETS.keys())}")
+    return {"id": dataset_id, **meta}
+
+
 @router.get("/forecast")
 def get_forecast(
     variable: str = Query("wind_speed_10m", description="Variable name (wind_speed_10m, total_precipitation, temperature_2m, mean_sea_level_pressure)"),

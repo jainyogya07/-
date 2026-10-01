@@ -59,7 +59,7 @@ python run.py
 ### 3. Run Automated Test Suite
 ```bash
 PYTHONPATH=backend pytest backend/tests -v
-# 34 tests covering data ingestion, preprocessing, EFI, spatial bboxes, GeoJSON, and APIs
+# 39 tests covering data ingestion, preprocessing, EFI, spatial bboxes, GeoJSON, datasets, and APIs
 ```
 
 ---

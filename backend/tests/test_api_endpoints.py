@@ -111,3 +111,22 @@ def test_weather_news_key_update():
     response = client.post("/weather/news/key", json={"api_key": "sample_mock_key"})
     assert response.status_code == 200
     assert response.json()["status"] == "success"
+
+
+def test_weather_datasets():
+    response = client.get("/weather/datasets")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["datasets_count"] >= 4
+    assert any(d["id"] == "neps_g" for d in data["datasets"])
+
+
+def test_weather_dataset_detail():
+    response = client.get("/weather/datasets/neps_g")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == "neps_g"
+    assert "spatial_resolution" in data
+
+    # 404 test
+    assert client.get("/weather/datasets/non_existent_dataset").status_code == 404

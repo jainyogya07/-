@@ -238,6 +238,72 @@ Returns an RFC 7946 `FeatureCollection` with:
 
 ---
 
+### 7. Module 14: Pest & Disease Risk Engine
+* **Endpoint**: `GET /weather/agri/pest-risk`
+* **Query Parameters**:
+  * `crop`: `rice` | `cotton` | `wheat`
+  * `stage`: `vegetative` | `flowering` | `maturity`
+  * `region`: Target region (e.g. `Odisha`, `Punjab`)
+* **Response**:
+```json
+{
+  "crop": "Rice (Paddy)",
+  "region": "Odisha",
+  "growth_stage": "Vegetative",
+  "overall_pest_disease_risk": 0.82,
+  "threat_level": "critical",
+  "action_urgency": "Immediate preventive spray within 24-48 hours",
+  "pathogens_evaluated": [
+    {
+      "pathogen": "Bacterial Leaf Blight (Xanthomonas oryzae)",
+      "type": "bacterial",
+      "risk_probability": 0.88,
+      "severity": "critical",
+      "contributing_factors": {
+        "temperature_match": true,
+        "humidity_exceeded": true,
+        "wind_rain_vector_active": true,
+        "stage_susceptible": true
+      },
+      "advisory": "Avoid nitrogen top-dressing; apply Streptocycline (0.01%) + Copper Oxychloride (0.25%)."
+    }
+  ]
+}
+```
+
+---
+
+### 8. Module 15: Mandi & Market Intelligence
+* **Endpoint**: `GET /weather/agri/market-intelligence`
+* **Query Parameters**:
+  * `region`: `odisha` | `west_bengal` | `punjab` | `gujarat`
+  * `crop`: `rice` | `wheat` | `cotton`
+  * `hazard`: `cyclone` | `heatwave` | `flood`
+* **Response**:
+```json
+{
+  "mandi_id": "MND-OD-001",
+  "mandi_name": "Bhubaneswar APMC Agricultural Market",
+  "commodity": {
+    "crop_name": "Rice / Paddy (Common & Grade A)",
+    "modal_price_inr_quintal": 2260.0,
+    "msp_benchmark_inr": 2183.0,
+    "premium_over_msp_pct": 3.53
+  },
+  "weather_shock_forecast": {
+    "hazard_driving_shock": "Cyclone",
+    "projected_arrival_reduction_72h_pct": 55.2,
+    "projected_price_surge_pct": 16.6,
+    "volatility_status": "Severe Volatility",
+    "supply_corridor_risk": "Inundation & Transport Blockage Expected",
+    "impacted_transit_routes": ["NH-16 (Coastal Highway)", "Bhubaneswar-Puri Link"]
+  },
+  "fpo_and_procurement_advisory": "Expedite pre-landfall procurement; redirect truck freight away from coastal routes."
+}
+```
+
+---
+
 ## 📦 Directory Structure
 
 ```text
@@ -248,7 +314,11 @@ Returns an RFC 7946 `FeatureCollection` with:
 │   │   ├── config.py                   # App configuration & geographical basins
 │   │   ├── api/
 │   │   │   ├── weather_routes.py       # Forecast, ensemble, anomaly, and timeline endpoints
-│   │   │   └── news_routes.py          # Live disaster news endpoints
+│   │   │   ├── news_routes.py          # Live disaster news endpoints
+│   │   │   └── agri_routes.py          # Modules 14 & 15: Pest risk & Mandi market intelligence
+│   │   ├── agri/
+│   │   │   ├── pest_risk.py            # Module 14: Pathogen & insect pest risk engine
+│   │   │   └── market_intelligence.py  # Module 15: Mandi pricing & weather shock model
 │   │   ├── data_ingestion/
 │   │   │   ├── loaders.py              # GRIB2 & NetCDF4 Dask loader
 │   │   │   └── synthetic_data.py       # 4D NEPS-G & 30-year ERA5 climatology generator

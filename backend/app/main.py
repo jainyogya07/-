@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.api.weather_routes import router as weather_router, get_datasets
 from app.api.news_routes import router as news_router
+from app.api.agri_routes import router as agri_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -52,6 +53,7 @@ app.add_middleware(
 # Include Routers
 app.include_router(weather_router)
 app.include_router(news_router)
+app.include_router(agri_router)
 
 
 @app.get("/", tags=["System Status"])

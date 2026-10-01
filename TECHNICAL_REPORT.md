@@ -377,6 +377,20 @@ backend/tests/test_spatial_geojson.py::test_events_to_geojson_feature_collection
 ======================= 37 passed in 23.91s =======================
 ```
 
+### `GET /weather/agri/pest-risk` (Module 14)
+* **Purpose**: Evaluates crop pathogen and insect pest infection risk driven by ambient/forecast humidity, temperature, and wind.
+* **Curl Example**:
+  ```bash
+  curl -s "http://localhost:8000/weather/agri/pest-risk?crop=rice&stage=vegetative&region=Odisha"
+  ```
+
+### `GET /weather/agri/market-intelligence` (Module 15)
+* **Purpose**: Integrates APMC Mandi modal prices, arrivals, and projects wholesale price surges and supply corridor shocks resulting from weather hazards.
+* **Curl Example**:
+  ```bash
+  curl -s "http://localhost:8000/weather/agri/market-intelligence?region=odisha&crop=rice&hazard=cyclone&efi_intensity=0.92"
+  ```
+
 ---
 
 ## 7. How to Launch and Push

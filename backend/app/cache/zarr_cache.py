@@ -30,7 +30,7 @@ class WeatherCacheManager:
             chunks = {"time": 1}
             for dim in ["latitude", "longitude"]:
                 if dim in ds.dims:
-                    chunks[dim] = min(60, ds.dims[dim])
+                    chunks[dim] = min(60, ds.sizes[dim])
             rechunked = ds.chunk(chunks)
             rechunked.to_zarr(target_path, mode="w")
             logger.info("Successfully cached dataset to Zarr at %s", target_path)

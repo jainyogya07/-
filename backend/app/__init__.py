@@ -1,0 +1,1 @@
+"""Weather backend application package."""

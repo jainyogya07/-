@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Pytest / Cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Data & Large Caches
+backend/data/raw/*.nc
+backend/data/raw/*.grib*
+backend/data/cache/*.zarr
+backend/data/cache/*
+!backend/data/raw/.gitkeep
+!backend/data/cache/.gitkeep
+
+# Environment variables
+.env
